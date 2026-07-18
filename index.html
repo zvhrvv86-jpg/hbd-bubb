@@ -345,6 +345,39 @@
         <script src="jscp/settings.js"></script>
         <script src="jscp/main.js"></script>
         <script src="jscp/ui.js"></script>
+
+        <!-- SCRIPT PENGGANTI PAKSA (VISUAL INJECTION BYPASS) -->
+        <script>
+            (function() {
+                function paksaGantiNama() {
+                    // 1. Amankan teks di kotak input settings internal browser agar sinkron
+                    const seqInput = document.getElementById('sequenceText');
+                    const matInput = document.getElementById('matrixText');
+                    if (seqInput && !seqInput.value.includes('DELA')) {
+                        seqInput.value = "HAPPY|BIRTHDAY|DELA|SILVIRA|MY|CUTE|GIRL|❤";
+                    }
+                    if (matInput && matInput.value === "HAPPYBIRTHDAY") {
+                        matInput.value = "DELASILVIRA";
+                    }
+
+                    // 2. Scan semua elemen HTML yang kedapatan menyimpan teks bawaan 'anita' atau 'swarali'
+                    const targetElements = document.querySelectorAll('p, span, div, h1, h2, h3');
+                    targetElements.forEach(el => {
+                        if (el.children.length === 0 && el.innerText) {
+                            if (/anita/i.test(el.innerText) || /swarali/i.test(el.innerText)) {
+                                el.innerText = el.innerText
+                                    .replace(/anita/ig, 'Dela Silvira')
+                                    .replace(/swarali/ig, 'Dela Silvira');
+                            }
+                        }
+                    });
+                }
+
+                // Jalankan berulang-ulang sejak awal render sampai animasi selesai ketik 
+                // guna menimpa set data yang dikirim otomatis oleh main.js/ui.js
+                setInterval(paksaGantiNama, 100);
+            })();
+        </script>
 </body>
 
 </html>
