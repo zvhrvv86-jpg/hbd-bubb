@@ -133,7 +133,7 @@ const translations = {
         paypalPaymentDesc: "Dành cho người dùng quốc tế",
     },
     en: {
-        title: "Special Gift for You 🎁",
+        title: "Special Gift for You Dela. Silvira🎁",
         description: "A special gift is waiting for you to discover! Press to see the special message!",
         login: "Sign in with Google",
         logout: "Logout",
