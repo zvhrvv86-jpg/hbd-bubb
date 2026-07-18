@@ -346,11 +346,40 @@
         <script src="jscp/main.js"></script>
         <script src="jscp/ui.js"></script>
 
-        <!-- SCRIPT PENGGANTI PAKSA (VISUAL INJECTION BYPASS) -->
+                <!-- SCRIPT PENGHANCUR OTOMATIS TULISAN ANITA (CANVAS & TEXT BYPASS) -->
         <script>
             (function() {
-                function paksaGantiNama() {
-                    // 1. Amankan teks di kotak input settings internal browser agar sinkron
+                // 1. Cegat fungsi gambar di Canvas (Titik-titik / Matrix Rain)
+                const asliFillText = CanvasRenderingContext2D.prototype.fillText;
+                CanvasRenderingContext2D.prototype.fillText = function(text, x, y, maxWidth) {
+                    if (typeof text === 'string') {
+                        if (/anita/i.test(text) || /swarali/i.test(text)) {
+                            text = text.replace(/anita/ig, 'Dela Silvira').replace(/swarali/ig, 'Dela Silvira');
+                        }
+                    }
+                    if (maxWidth === undefined) {
+                        asliFillText.call(this, text, x, y);
+                    } else {
+                        asliFillText.call(this, text, x, y, maxWidth);
+                    }
+                };
+
+                const asliStrokeText = CanvasRenderingContext2D.prototype.strokeText;
+                CanvasRenderingContext2D.prototype.strokeText = function(text, x, y, maxWidth) {
+                    if (typeof text === 'string') {
+                        if (/anita/i.test(text) || /swarali/i.test(text)) {
+                            text = text.replace(/anita/ig, 'Dela Silvira').replace(/swarali/ig, 'Dela Silvira');
+                        }
+                    }
+                    if (maxWidth === undefined) {
+                        asliStrokeText.call(this, text, x, y);
+                    } else {
+                        asliStrokeText.call(this, text, x, y, maxWidth);
+                    }
+                };
+
+                // 2. Cegat juga teks HTML biasa yang telat muncul
+                function paksaGantiTeks() {
                     const seqInput = document.getElementById('sequenceText');
                     const matInput = document.getElementById('matrixText');
                     if (seqInput && !seqInput.value.includes('DELA')) {
@@ -360,24 +389,15 @@
                         matInput.value = "DELASILVIRA";
                     }
 
-                    // 2. Scan semua elemen HTML yang kedapatan menyimpan teks bawaan 'anita' atau 'swarali'
-                    const targetElements = document.querySelectorAll('p, span, div, h1, h2, h3');
-                    targetElements.forEach(el => {
+                    const elements = document.querySelectorAll('p, span, div, h1, h2, h3, canvas');
+                    elements.forEach(el => {
                         if (el.children.length === 0 && el.innerText) {
                             if (/anita/i.test(el.innerText) || /swarali/i.test(el.innerText)) {
-                                el.innerText = el.innerText
-                                    .replace(/anita/ig, 'Dela Silvira')
-                                    .replace(/swarali/ig, 'Dela Silvira');
+                                el.innerText = el.innerText.replace(/anita/ig, 'Dela Silvira').replace(/swarali/ig, 'Dela Silvira');
                             }
                         }
                     });
                 }
-
-                // Jalankan berulang-ulang sejak awal render sampai animasi selesai ketik 
-                // guna menimpa set data yang dikirim otomatis oleh main.js/ui.js
-                setInterval(paksaGantiNama, 100);
+                setInterval(paksaGantiTeks, 50);
             })();
         </script>
-</body>
-
-</html>
